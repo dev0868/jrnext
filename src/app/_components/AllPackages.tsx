@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import ProductCard from "./homepage/ProductCard";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const AllPackages = () => {
   const [destinations, setDestinations] = useState<string[]>([]);
@@ -23,7 +24,9 @@ const AllPackages = () => {
           "https://2rltmjilx9.execute-api.ap-south-1.amazonaws.com/DataTransaction/Destination?destinationname=all"
         );
         const data = await res.json();
-        const names = data.map((dest: any) => dest.DestinationName);
+        const names = data.map(
+          (dest: { DestinationName: string }) => dest.DestinationName
+        );
         setDestinations(names);
         setActiveDest(names[0]);
       } catch (err) {
@@ -41,8 +44,9 @@ const AllPackages = () => {
       try {
         setLoading(true);
         const res = await fetch(
-          `https://2rltmjilx9.execute-api.ap-south-1.amazonaws.com/DataTransaction/SearchPackages?destinationname=${activeDest}&offset=${page *
-            LIMIT}&limit=${LIMIT}`
+          `https://2rltmjilx9.execute-api.ap-south-1.amazonaws.com/DataTransaction/SearchPackages?destinationname=${activeDest}&offset=${
+            page * LIMIT
+          }&limit=${LIMIT}`
         );
         const data = await res.json();
         const newPackages = data.data || [];
@@ -77,8 +81,7 @@ const AllPackages = () => {
   useEffect(() => {
     const handleScroll = () => {
       const nearBottom =
-        window.innerHeight + window.scrollY >=
-        document.body.offsetHeight - 300;
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
 
       if (nearBottom && !loading && hasMore) {
         setPage((prev) => prev + 1);
@@ -99,7 +102,9 @@ const AllPackages = () => {
 
   return (
     <section className="py-10 px-4 bg-white">
-      <h2 className="text-3xl font-bold mb-6 text-center">Find the Perfect Trip — Tailored for Every Destination</h2>
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        Find the Perfect Trip — Tailored for Every Destination
+      </h2>
 
       {/* Sticky Tabs with Scroll Buttons */}
       <div className="sticky top-[60px] no-scrollbar  z-40 bg-white py-2 border-b border-gray-200 flex items-center gap-2">
@@ -142,22 +147,25 @@ const AllPackages = () => {
         <p className="text-center text-gray-500 mt-10">Loading packages...</p>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
-          {packages.slice(0,20).map((pkg) => (
-            <ProductCard
-              key={pkg.PackageId}
-              title={pkg.PackageTitle}
-              image={pkg.HeroBanners?.Landscape}
-              duration={`${pkg.Days} days & ${pkg.Nights} nights`}
-              rating={pkg.Rating}
-              locations={
-                pkg.Itineary?.slice(0, 3).map((i: any) => i.ActivityName) || []
-              }
-              price={Number(pkg.ShowCasePrice)}
-              originalPrice={Number(pkg.BasePrice)}
-              saveAmount={Number(pkg.BasePrice) - Number(pkg.ShowCasePrice)}
-              currency="INR"
-              tag={null}
-            />
+          {packages.slice(0, 20).map((pkg) => (
+            <Link href={`tours/${pkg.Slug}`} key={pkg.PackageId}>
+              <ProductCard
+                title={pkg.PackageTitle}
+                image={pkg.HeroBanners?.Landscape}
+                duration={`${pkg.Days} days & ${pkg.Nights} nights`}
+                rating={pkg.Rating}
+                locations={
+                  pkg.Itineary?.slice(0, 3).map(
+                    (i: { ActivityName: string }) => i.ActivityName
+                  ) || []
+                }
+                price={Number(pkg.ShowCasePrice)}
+                originalPrice={Number(pkg.BasePrice)}
+                saveAmount={Number(pkg.BasePrice) - Number(pkg.ShowCasePrice)}
+                currency="INR"
+                tag={null}
+              />
+            </Link>
           ))}
         </div>
       )}
