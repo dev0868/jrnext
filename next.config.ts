@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   images: {
     remotePatterns: [
       {
@@ -13,8 +12,18 @@ const nextConfig: NextConfig = {
         hostname: "packageimage.s3.ap-south-1.amazonaws.com",
         pathname: "/Thailand/**",
       },
+      {
+        protocol: "https",
+        hostname: "packageimage.s3.ap-south-1.amazonaws.com",
+        pathname: "/tours/**",
+      },
+      {
+        protocol: "https",
+        hostname: "packageimage.s3.ap-south-1.amazonaws.com",
+        pathname: "/NorthEast/**", // <-- ADD THIS
+      },
     ],
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
