@@ -1,9 +1,11 @@
 "use client";
 
+import FAQSection from "@/app/_components/FAQSection";
 import BookingSidebar from "./_components/BookingSidebar";
 import HeroBanner from "./_components/HeroBanner";
 import ItineraryAccordion from "./_components/ItineraryAccordion";
 import { TourPackage } from "./TourTypes";
+import InterlinkedSection from "@/app/_components/InterlinkedSection";
 
 const ItineraryPage = ({ slug }: { slug: TourPackage }) => {
   console.log(slug);
@@ -21,6 +23,8 @@ const ItineraryPage = ({ slug }: { slug: TourPackage }) => {
           <BookingSidebar data={slug} />
         </div>
       </div>
+      <FAQSection />
+      <InterlinkedSection />
     </div>
   );
 };

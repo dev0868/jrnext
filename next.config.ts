@@ -20,7 +20,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "packageimage.s3.ap-south-1.amazonaws.com",
-        pathname: "/NorthEast/**", // <-- ADD THIS
+        pathname: "/NorthEast/**",
+      },
+      {
+        protocol: "https",
+        hostname: "packageimage.s3.ap-south-1.amazonaws.com",
+        pathname: "/**", // <--- ADD THIS LINE
       },
     ],
   },

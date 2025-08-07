@@ -1,3 +1,4 @@
+import { useEnquiryModal } from "@/app/context/EnquiryModalContext";
 import { useFormik } from "formik";
 import { Star } from "lucide-react";
 import * as Yup from "yup";
@@ -29,17 +30,20 @@ const BookingSidebar = ({ data }) => {
       // TODO: Handle form submission logic
     },
   });
+  const { show } = useEnquiryModal();
 
   return (
     <div className="sticky top-[4rem]">
-      <div className="bg-white border rounded-xl shadow p-5  w-full max-w-sm">
+      <div className="bg-white border-gray-900 rounded-xl shadow p-5  w-full max-w-sm">
         <div className="flex justify-between items-center mb-2">
           <div>
             <div className="text-xl font-bold">
-              INR 79,000{" "}
+              INR {data?.SellingPrice}{" "}
               <span className="text-sm text-gray-500">Per Adult</span>
             </div>
-            <div className="line-through text-gray-500">INR 1,19,000</div>
+            <div className="line-through text-gray-500">
+              INR {data?.ShowCasePrice}
+            </div>
           </div>
           <div className="flex items-center gap-1">
             <Star className="text-green-500" size={20} />
@@ -48,13 +52,16 @@ const BookingSidebar = ({ data }) => {
           </div>
         </div>
         <hr className="my-2" />
-        <button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md px-4 py-2 w-full font-semibold">
+        <button
+          onClick={show}
+          className="mt-2 bg-orange-500 hover:bg-orange-600 text-white rounded-md px-4 py-2 w-full font-semibold"
+        >
           Send Enquiry
         </button>
       </div>
       <br />
 
-      <div className="bg-white border rounded-xl shadow p-5 w-full max-w-md">
+      <div className="bg-white border-black-900 rounded-xl shadow p-5 w-full max-w-md">
         <div className="mb-4">
           <h2 className="font-semibold text-lg mb-2">{data?.PackageName}</h2>
           <div className="text-xl font-bold">
